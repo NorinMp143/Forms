@@ -1,3 +1,27 @@
-<h1>I am testing the javascript.</h1>
-<button id="ram">Click me to see alert!!</button>
-<%= javascript_pack_tag 'formbuilder' %>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<div id="original-inputs">
+  <label>Label</label>
+  <input name='label' type="text"/>
+  <br/>
+</div>
+
+<div id="dynamic-inputs"></div>
+
+<button type='button' onclick="addMore()">Add More Element</button>
+<button id='sendRequest' onclick='submiForm()'>submit</button>
+
+<script>
+function addMore(){
+    $("#dynamic-inputs").append($("#original-inputs").html())
+  }
+
+  function submiForm() {
+    let data = []
+    $("[name='label']").each((i, item)=>
+    {
+      data.push({'label': item.value})
+    })
+    console.log({'quote_amounts': data})
+  }
+</script>

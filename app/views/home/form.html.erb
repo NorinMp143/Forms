@@ -1,0 +1,126 @@
+<style>
+  .playground{
+    width: 100%;
+    display: flex;
+  }
+  .playground .left{
+    width: calc(100% - 200px);
+  }
+  .playground .right{
+    width: 200px;
+  }
+  .panel-wrapper{
+    display: none;
+  }
+</style>
+
+<div class="playground">
+  <div class="left display-panel">
+
+    <div id="form-builder">
+
+    </div>
+
+  </div>
+  <div class="right design-panel">
+    <div>
+      <div>
+        <button onclick="addnew()">Add new element</button>
+      </div>
+      <div id="customize-panel">
+        <!-- <div class="panel-wrapper">
+          <div>
+            <select id="elementType">
+              <option value="-1">Select Element type</option>
+              <option value="input">Input</option>
+              <option value="select">Select</option>
+              <option value="textarea">Textarea</option>
+              <option value="radio">Radio</option>
+              <option value="checkbox">Checkbox</option>
+              <option value="button">Button</option>
+            </select>
+          </div>
+          <div>
+
+          </div>
+          <button onclick="saveIntoForm()">Submit</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+  var getUniqueId = 0;
+  function addnew(){
+    $('.panel-wrapper').css('display','none');
+    
+    let newHtml = `
+    <div class="panel-wrapper" id=`+getUniqueId+`>
+          <div>
+            <select id="elementType" onchange="if(this.selectedIndex) addOptionsByType(this,${getUniqueId})">
+              <option value="-1">Select Field type</option>
+              <option value="input">Input</option>
+              <option value="select">Select</option>
+              <option value="textarea">Textarea</option>
+              <option value="radio">Radio</option>
+              <option value="checkbox">Checkbox</option>
+              <option value="button">Button</option>
+            </select>
+          </div>
+          <div>
+            <input type="text" id="fieldlabel" placeholder="Enter Field Label" />
+          </div>
+          <div id="optionsOnType">
+          </div>
+          <button onclick="saveIntoForm(${getUniqueId},this)">Submit</button>
+        </div>
+    `;
+    $('#customize-panel').append(newHtml);
+    $(`.panel-wrapper#${getUniqueId}`).css('display','block');
+    getUniqueId++;
+  }
+
+  function saveIntoForm(getUniqueId,thisElement){
+    let formFields = "";
+    getElementType = $(`#${getUniqueId} #elementType`).val();
+    getfieldlabel = $(`#${getUniqueId} #fieldlabel`).val();
+    
+    formFields += `<label for="${getfieldlabel}">${getfieldlabel}</label><br>`
+    if(getElementType=='input'){
+      gettype = $(`#${getUniqueId} #attributetype`).val();
+      getplace = $(`#${getUniqueId} #placeholder`).val();
+      formFields += `<input type="${gettype}" placeholder="${getplace}" /><br>`
+    }
+    else if(getElementType=='textarea'){
+      getplace = $(`#${getUniqueId} #placeholder`).val();
+      formFields += `<textarea row="3" placeholder="${getplace}"></textarea><br>`;
+    }
+    $('#form-builder').append(formFields);
+    $(thisElement).remove();
+    $(`#${getUniqueId}`).append(`<button onclick="updateForm(${getUniqueId})">Update</button>`);
+  }
+
+  function addOptionsByType(x, id){
+    optionHtml = "";
+    getType = $(x).val();
+    if(getType=='input'){
+      optionHtml += `
+        <select id="attributetype">
+          <option value="-1">Select Element Type</option>
+          <option value="text">Text</option>
+          <option value="email">Email</option>
+          <option value="number">Number</option>
+        </select>
+      `;
+    }
+    if(getType=='input'|| getType =='textarea'){
+      optionHtml += `
+        <label>Enter Placeholder</label>
+        <input id="placeholder"/>
+      `
+    }
+    $(`#${id} #optionsOnType`).append(optionHtml);
+  }
+</script>

@@ -1,0 +1,30 @@
+<style>
+  .hide{
+    display: none;
+  }
+</style>
+
+<%= form_for([@form, @field]) do |f| %>
+  <div id="skillSet">
+    <%= render partial: "fields/form" %>
+
+  </div>
+  <a href="javascript:;" id="addNewTag">Add New Tag</a>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
+
+<div class="hide" id="new_skills_form">
+  <%= render partial: "fields/form", locals: {skill: false} %>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#addNewTag").click(function(){
+    $("#skillSet").append($("#new_skills_form").html());
+  });
+});
+</script>

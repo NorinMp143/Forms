@@ -1,0 +1,158 @@
+// Place all the styles related to the form controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+// new page styles
+.whole-container{
+  .header{
+    box-shadow: 0 0 50px 0 aliceblue;
+
+    .container{
+      .pagetitle{
+        padding: 1rem 1rem 0;
+      
+        h2{
+          margin: 0;
+        }
+      }
+    }
+    .nav{
+      display: flex;
+      height: 100%;
+      width: 100%;
+      max-width: 90%;
+      margin: 0 auto;
+
+      .navleft{
+        flex: 1 0 auto;
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+
+        .pagetitle{
+          h2{
+
+          }
+        }
+      }
+      .navright{
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+
+        .pageaction{
+          .btn {
+            background: aliceblue;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            &:hover{
+              box-shadow: 0 2px 12px 0 burlywood;
+            }
+          }
+        }
+      }
+    }
+
+  }
+  .main-container{
+    padding: 2rem 0;
+    #form-builder{
+      .container{
+        #form-field-panel{
+          .form-field{
+            box-shadow: 0 0 5px .41px darkgray;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+
+            .form-actions{
+              display: flex;
+              padding: 1rem;
+              border-bottom: 2px solid #aaa;
+
+              .left{
+                flex: 1 0 auto;
+              }
+              .right{}
+              .form-options{
+                div{
+                  .action-btn{
+                    background: #fff;
+                    border-radius: 4px;
+                    font-weight: bolder;
+                    padding: 6px 12px;
+                    cursor: pointer;
+                  }
+                }
+              }
+              .main{
+                div{
+                  .action-btn{
+                    border: 1px solid rgb(5, 80, 241);
+                    color: rgb(5, 80, 241);
+                  }
+                }
+              }
+              .danger{
+                div{
+                  .action-btn{
+                    border: 1px solid crimson;
+                    color: crimson;
+                    &:hover{
+                      box-shadow: 0 0 5px 0 crimson;
+                    }
+                  }
+                }
+              }
+            }
+            .form-field-details{
+              padding: 2rem 1rem;
+
+              .field-wrapper{
+                display: flex;
+
+                .field-group{
+                  width: 25%;
+                  padding: 0.5rem;
+                  margin-bottom: 20px;
+
+                  select{
+                    width: 100%;
+                    padding: 12px;
+                  }
+                  input{
+                    width: 100%;
+                    padding: 0;
+                    margin: 0;
+                    border: 1px solid #dadce0;
+                    padding: 1rem 0;
+                    border-radius: 4px;
+                    text-indent: 12px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        #form-field-action{
+          display: flex;
+          justify-content: end;
+          
+          .btn{
+            background: aliceblue;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            &:hover{
+              box-shadow: 0 2px 12px 0 burlywood;
+            }
+          }
+        }
+      }
+    }
+  }
+}
