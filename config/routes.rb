@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :forms do
     resources :fields
+    resources :responses
   end
   namespace :api do
     namespace :save_form do
