@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  form: one
+  name: MyString
+  mobile: 1
+
+two:
+  form: two
+  name: MyString
+  mobile: 1
