@@ -10,5 +10,34 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_16_193729) do
+ActiveRecord::Schema.define(version: 2021_06_18_151224) do
 
+  create_table "fields", force: :cascade do |t|
+    t.integer "order"
+    t.string "fieldtype"
+    t.string "label"
+    t.string "elementtype"
+    t.integer "form_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["form_id"], name: "index_fields_on_form_id"
+  end
+
+  create_table "forms", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "responses", force: :cascade do |t|
+    t.integer "form_id", null: false
+    t.string "name"
+    t.integer "mobile"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["form_id"], name: "index_responses_on_form_id"
+  end
+
+  add_foreign_key "fields", "forms"
+  add_foreign_key "responses", "forms"
+end
