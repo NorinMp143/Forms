@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
+  
   resources :forms do
     resources :fields
-    resources :responses
+    resources :responses, controller: 'api/save_form/responses'
   end
   namespace :api do
     namespace :save_form do
       resources :responses
     end
+    get 'embed/forms/:id', controller: '/forms', action: 'embed'
   end
 
   get 'home/form'

@@ -18,6 +18,7 @@
       <td><%= link_to 'Destroy', form_path(form),
               method: :delete,
               data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      <td><%= link_to 'All Responses', form_responses_path(form), class: 'btn btn-info' %></td>
     </tr>
   <% end %>
 </table>

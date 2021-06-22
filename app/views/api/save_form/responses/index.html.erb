@@ -1,0 +1,26 @@
+<div class="container">
+<h1>Listing Responses</h1>
+
+<% if(@responses.length > 0) %>
+<div class="table-responsive">
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th colspan="2"></th>
+  </tr>
+ 
+  <% @responses.each do |res| %>
+    <tr>
+      <td><%= res.name %></td>
+      <td><%= link_to 'Show', form_response_path(@form,res), class: 'btn btn-primary' %></td>
+      <td><%= link_to 'Destroy', form_response_path(@form,res),
+              method: :delete,
+              data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+    </tr>
+  <% end %>
+</table>
+</div>
+<% else %>
+No Responses Found
+<% end %>
+</div>
