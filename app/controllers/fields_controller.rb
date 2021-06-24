@@ -13,7 +13,15 @@ class FieldsController < ApplicationController
 
   end
 
+  skip_before_action :verify_authenticity_token
   def destroy
+    # @form = Form.find(params[:form_id])
+    @field = Field.find(params[:id])
+    if @field.destroy
+      render :json => { :response => 'Successfully Sent.' }
+    else
+      render :json => { :response => 'Something Went Wrong!' }, :status=> 404
+    end
   end
 
   def testing

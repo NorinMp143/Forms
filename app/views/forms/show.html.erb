@@ -1,7 +1,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 function deleteField(id){
-  if($(`${id}`).hasAttribute("data-index")){
+  if($(`${id}`)[0].hasAttribute("data-index")){
     let fieldIndex = $(`${id}`).attr('data-index');
 
     let fieldtype = $(`${id} #fieldtypes_`).val();
@@ -10,11 +10,11 @@ function deleteField(id){
     let type = $(`${id} #types_`).val();
 
     $.ajax({
-      url: `/forms/${@form.id}/fields/${fieldIndex}`,
+      url: `/forms/<%= @form.id %>/fields/${fieldIndex}`,
       method: 'delete',
       data: { fieldtype, label, placeholder, type },
       complete: function(data){
-        console.log(alert('Successful deleted.'));
+        alert(data.responseText.response);
       }
     })
   }
@@ -81,7 +81,11 @@ function deleteField(id){
           <% end %>
             <!-- here our form fields -->
           </div>
-          <div id="form-field-action"></div>
+          <div id="form-field-action">
+            <% if(@form.fields.length>0)%>
+              <%= button_tag "Submit", class: "btn" %>
+            <% end %>
+          </div>
         <% end %>
       </div>
     </section>
