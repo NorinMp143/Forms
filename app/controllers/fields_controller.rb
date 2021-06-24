@@ -13,6 +13,9 @@ class FieldsController < ApplicationController
 
   end
 
+  def destroy
+  end
+
   def testing
   end
 

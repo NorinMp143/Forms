@@ -1,6 +1,23 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 function deleteField(id){
+  if($(`${id}`).hasAttribute("data-index")){
+    let fieldIndex = $(`${id}`).attr('data-index');
+
+    let fieldtype = $(`${id} #fieldtypes_`).val();
+    let label = $(`${id} #labels_`).val();
+    let placeholder = $(`${id} #placeholders_`).val();
+    let type = $(`${id} #types_`).val();
+
+    $.ajax({
+      url: `/forms/${@form.id}/fields/${fieldIndex}`,
+      method: 'delete',
+      data: { fieldtype, label, placeholder, type },
+      complete: function(data){
+        console.log(alert('Successful deleted.'));
+      }
+    })
+  }
   $(id).remove();
 }
 </script>
@@ -33,7 +50,7 @@ function deleteField(id){
           <div id="form-field-panel">
           <% @form.fields.each_with_index do |field, index| %>
             <% if(field.fieldtype) %>
-            <div class="form-field" id="form-field<%= index %>">
+            <div class="form-field" data-index="<%= field.id %>" id="form-field<%= index %>">
               <div class="form-actions">
                 <div class="left form-options main"></div>
                 <div class="right form-options danger">
