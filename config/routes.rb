@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     namespace :save_form do
       resources :responses
     end
-    get 'embed/forms/:id', controller: '/forms', action: 'embed'
+    post 'embed/forms/:id', controller: 'save_form/responses', action: 'display'
   end
 
   get 'home/form'

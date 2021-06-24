@@ -5,7 +5,7 @@ require_relative "config/environment"
 use Rack::Cors do
   allow do
     origins '*'
-    resource 'api/save_form/responses', headers: :any, methods: :post
+    resource 'api/*', headers: :any, methods: :post
   end
 end
 

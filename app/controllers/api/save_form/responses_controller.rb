@@ -28,4 +28,32 @@ class Api::SaveForm::ResponsesController < ApplicationController
     end
   end
 
+  def display
+    @form = Form.find(params[:id])
+    @fields = @form.fields
+
+    data = { form_id: params[:id] };
+
+    formHtml = '<form onsubmit="sendMail()">';
+    
+    @fields.each do |field|
+      data[field.label] = `$('##{field.label}').val()`
+      formHtml += '<input id="%{n}" type="%{t}" name="%{n}" placeholder="Enter %{p}"/>' % { n: field.label, t: field.elementtype, p: field.label.upcase_first }
+    end
+    formHtml += '<button type="submit">Submit</button></form>';
+    formHtml += "<script>function sendMail(){
+      event.preventDefault();
+      $.ajax({
+        url: 'http://localhost:3000/api/save_form/responses',
+        method: 'post',
+        data: #{data.to_json},
+        complete: function(data){
+          console.log(data);
+        }
+      })
+    }</script>"
+    render :json => { :response => formHtml }
+  end
+
+
 end

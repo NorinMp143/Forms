@@ -2,6 +2,6 @@ Rails.application.config.hosts << "*"
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     origins 'http://127.0.0.1:8080'
-    resource '/api/save_form/responses', headers: :any, methods: :post
+    resource '/api/*', headers: :any, methods: :post
   end
 end
