@@ -33,14 +33,37 @@ class Api::SaveForm::ResponsesController < ApplicationController
     @fields = @form.fields
 
     data = { form_id: params[:id] };
-
-    formHtml = '<form onsubmit="sendMail()">';
+    formHtml = '<style>
+      .container{
+        width: 100%;
+        max-width: 90%;
+        margin: 0 auto;
+      }
+      form {
+        padding: 3rem 2rem;
+        box-shadow: 0 0 50px 0 aliceblue;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-control {
+        width: 100%;
+      }
+      .btn{
+        background: aliceblue;
+        padding: .5rem 3rem;
+        border-radius: 4px;
+        border: 2px solid aquamarine;
+        cursor: pointer;
+      }
+    </style>';
+    formHtml += '<form onsubmit="sendMail()">';
     
     @fields.each do |field|
       data[field.label] = `$('##{field.label}').val()`
-      formHtml += '<input id="%{n}" type="%{t}" name="%{n}" placeholder="Enter %{p}"/>' % { n: field.label, t: field.elementtype, p: field.label.upcase_first }
+      formHtml += '<div class="form-group"><input id="%{n}" class="form-control" type="%{t}" name="%{n}" placeholder="Enter %{p}"/></div>' % { n: field.label, t: field.elementtype, p: field.label.upcase_first }
     end
-    formHtml += '<button type="submit">Submit</button></form>';
+    formHtml += '<button class="btn" type="submit">Submit</button></form>';
     formHtml += "<script>function sendMail(){
       event.preventDefault();
       $.ajax({

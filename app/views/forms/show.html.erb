@@ -1,8 +1,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 function deleteField(id){
-  console.log(id);
-  $('#form-field-action').find(id).remove();
+  $(id).remove();
 }
 </script>
 <div class="whole-container">
@@ -30,7 +29,7 @@ function deleteField(id){
   <div class="main-container">
     <section id="form-builder">
       <div class="container">
-        <%= form_for([@form, @form.fields.build]) do |f| %>
+        <%= form_for([@form, @form.fields.build],remote: true) do |f| %>
           <div id="form-field-panel">
           <% @form.fields.each_with_index do |field, index| %>
             <% if(field.fieldtype) %>
@@ -39,7 +38,7 @@ function deleteField(id){
                 <div class="left form-options main"></div>
                 <div class="right form-options danger">
                   <div>
-                    <button type="button" onclick="deleteField('#form-field<%= index %>')" class="action-btn">x</button>
+                    <button type="button" onclick="deleteField('#form-field<%= index %>')" data-remote="true" class="action-btn">x</button>
                   </div>
                 </div>
               </div>
