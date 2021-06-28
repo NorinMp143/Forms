@@ -11,7 +11,6 @@ Rails.application.routes.draw do
     post 'embed/forms/:id', controller: 'save_form/responses', action: 'display'
   end
 
-  get 'home/form'
-  root 'home#index'
+  root 'forms#index'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

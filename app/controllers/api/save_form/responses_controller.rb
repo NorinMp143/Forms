@@ -28,6 +28,7 @@ class Api::SaveForm::ResponsesController < ApplicationController
     end
   end
 
+  protect_from_forgery with: :null_session
   def display
     @form = Form.find(params[:id])
     @fields = @form.fields
@@ -57,7 +58,7 @@ class Api::SaveForm::ResponsesController < ApplicationController
         cursor: pointer;
       }
     </style>';
-    formHtml += '<form onsubmit="sendMail()">';
+    formHtml += '<form id="sendMsgForm">';
     
     @fields.each do |field|
       data[field.label] = `$('##{field.label}').val()`
@@ -73,6 +74,10 @@ class Api::SaveForm::ResponsesController < ApplicationController
         complete: function(data){
           console.log(data);
         }
+      });
+      $('#sendMsgForm').submit(function(e){
+        e.preventDefault();
+        sendMail();
       })
     }</script>"
     render :json => { :response => formHtml }

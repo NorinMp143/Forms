@@ -2,6 +2,25 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
+
+// theme variable
+$normalActionBtn: rgb(5, 80, 241);
+$dangerActionBtn: crimson;
+
+// default styles
+.formbed-btn {
+  background: aliceblue;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  &:hover{
+    box-shadow: 0 2px 12px 0 burlywood;
+  }
+}
+
+
 // new page styles
 .whole-container{
   .header{
@@ -16,7 +35,7 @@
         }
       }
     }
-    .nav{
+    .formbed-nav{
       display: flex;
       height: 100%;
       width: 100%;
@@ -28,31 +47,13 @@
         padding: 1rem;
         display: flex;
         align-items: center;
-
-        .pagetitle{
-          h2{
-
-          }
-        }
       }
+
       .navright{
         padding: 1rem;
         display: flex;
         align-items: center;
 
-        .pageaction{
-          .btn {
-            background: aliceblue;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            &:hover{
-              box-shadow: 0 2px 12px 0 burlywood;
-            }
-          }
-        }
       }
     }
 
@@ -90,18 +91,18 @@
               .main{
                 div{
                   .action-btn{
-                    border: 1px solid rgb(5, 80, 241);
-                    color: rgb(5, 80, 241);
+                    border: 1px solid $normalActionBtn;
+                    color: $normalActionBtn;
                   }
                 }
               }
               .danger{
                 div{
                   .action-btn{
-                    border: 1px solid crimson;
-                    color: crimson;
+                    border: 1px solid $dangerActionBtn;
+                    color: $dangerActionBtn;
                     &:hover{
-                      box-shadow: 0 0 5px 0 crimson;
+                      box-shadow: 0 0 5px 0 $dangerActionBtn;
                     }
                   }
                 }
@@ -140,17 +141,6 @@
           display: flex;
           justify-content: end;
           
-          .btn{
-            background: aliceblue;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 1px solid #ccc;
-            &:hover{
-              box-shadow: 0 2px 12px 0 burlywood;
-            }
-          }
         }
       }
     }

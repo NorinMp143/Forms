@@ -56,4 +56,4 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # add cors for requesting from other hosted webistes
-gem 'rack-cors'
+gem 'rack-cors', :require => 'rack/cors'

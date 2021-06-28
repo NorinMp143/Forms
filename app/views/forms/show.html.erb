@@ -14,7 +14,8 @@ function deleteField(id){
       method: 'delete',
       data: { fieldtype, label, placeholder, type },
       complete: function(data){
-        alert(data.responseText.response);
+        console.log(data);
+        alert(data.responseJSON.response);
       }
     })
   }
@@ -28,16 +29,18 @@ function deleteField(id){
         <h2>Create Form Fields</h2>
       </div>
     </div>
-    <div class="nav">
+    <div class="formbed-nav">
       <div class="navleft">
         <div class="form-name">
           <strong>Form Name: </strong>
-          <%= @form.name %> <%= link_to 'Edit', edit_form_path(@form), class: 'btn btn-warning' %>
+          <%= @form.name %> 
+          <%= link_to 'Edit', edit_form_path(@form), class: 'btn btn-warning' %>
+          <%= link_to 'Back', forms_path, class: 'btn btn-info' %>
         </div>
       </div>
       <div class="navright">
         <div class="pageaction">
-          <button class="btn" id="addNewTag">Add New Element</button>
+          <button class="formbed-btn" id="addNewTag">Add New Element</button>
         </div>
       </div>
     </div>
@@ -61,6 +64,7 @@ function deleteField(id){
               </div>
               <div class="form-field-details">
                 <div class="field-wrapper">
+                  <%= hidden_field_tag 'datas[]', field.id %>
                   <div class="field-group">
                     <%= select_tag('fieldtypes[]',options_for_select([ ["Select Field Type",'-1'], ["Input",'input'], ["Textarea", 'textarea'] ],:selected=>field.fieldtype)) %>
                   </div>
@@ -82,8 +86,8 @@ function deleteField(id){
             <!-- here our form fields -->
           </div>
           <div id="form-field-action">
-            <% if(@form.fields.length>0)%>
-              <%= button_tag "Submit", class: "btn" %>
+            <% if(@form.fields[0].fieldtype && @form.fields.length>0)%>
+              <%= button_tag "Submit", class: "formbed-btn" %>
             <% end %>
           </div>
         <% end %>
@@ -107,8 +111,8 @@ $(document).ready(function(){
       .attr('onclick','deleteField("#form-field'+$('#form-field-panel .form-field').length+'")');
 
     if($('#form-field-panel .form-field').length==1){
-      let submitBtnHtml = '<%= button_tag "Submit", class: "btn" %>';
-      $('#form-field-action').append(submitBtnHtml);
+      let submitBtnHtml = '<%= button_tag "Submit", class: "formbed-btn" %>';
+      $('#form-field-action').html(submitBtnHtml);
     }
   });
   

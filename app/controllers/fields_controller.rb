@@ -4,10 +4,20 @@ class FieldsController < ApplicationController
     labels = params[:labels]
     placeholders = params[:placeholders]
     types = params[:types]
+    datas = params[:datas] || [];
 
     @form = Form.find(params[:form_id])
+    # updateDataCount = 0
     types.each_with_index do |type, index|
-      @field = @form.fields.create(:order => index, :fieldtype=> fieldtypes[index],:label => labels[index], :elementtype => types[index])
+      # if(datas.length>0 && updateDataCount==0){
+      #   update(params)
+      #   updateDataCount++;
+      # }
+      if(datas.length<=index)
+        @field = @form.fields.create(:order => index, :fieldtype=> fieldtypes[index],:label => labels[index], :elementtype => types[index])
+      else
+        @field = @form.fields.where(:id=>datas[index]).update(:order => index, :fieldtype=> fieldtypes[index],:label => labels[index], :elementtype => types[index])
+      end
     end
     redirect_to form_path(@form)
 
