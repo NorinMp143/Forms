@@ -20,7 +20,15 @@ class Api::SaveForm::ResponsesController < ApplicationController
   protect_from_forgery with: :null_session
   def create
     @form = Form.find(params[:form_id]);
-    newData = { :name => params[:name], :mobile => params[:mobile], :form_id => params[:form_id] }
+    countRes = @form.responses.length<1?0:@form.responses.maximum('counter');
+    @form.fields.each do |field|
+      newData = { 
+        :field_id => params[field.id],
+        :value => params[:value],
+        :counter => countRes + 1,
+        :form_id => params[:form_id]
+      }
+    end
     if @form.responses.create(newData)
       render :json => { :response => 'Successfully Sent.' }
     else
@@ -61,7 +69,7 @@ class Api::SaveForm::ResponsesController < ApplicationController
     formHtml += '<form id="sendMsgForm">';
     
     @fields.each do |field|
-      data[field.label] = `$('##{field.label}').val()`
+      data[field.id] = `$('##{field.label}').val()`
       formHtml += '<div class="form-group"><input id="%{n}" class="form-control" type="%{t}" name="%{n}" placeholder="Enter %{p}"/></div>' % { n: field.label, t: field.elementtype, p: field.label.upcase_first }
     end
     formHtml += '<button class="btn" type="submit">Submit</button></form>';
