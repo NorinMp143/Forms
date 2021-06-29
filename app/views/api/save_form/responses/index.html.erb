@@ -1,23 +1,25 @@
 <div class="container">
 <h1>Listing Responses</h1>
 <%= link_to 'Back', forms_path, class: 'btn btn-info' %>
-<% if(@responses.length > 0) %>
+<% if(@countRes > 0) %>
 <div class="table-responsive">
 <table class="table">
-  <tr>
-    <th>Name</th>
-    <th colspan="2"></th>
-  </tr>
- 
-  <% @responses.each do |res| %>
-    <tr>
-      <td><%= res.name %></td>
-      <td><%= link_to 'Show', form_response_path(@form,res), class: 'btn btn-primary' %></td>
-      <td><%= link_to 'Destroy', form_response_path(@form,res),
-              method: :delete,
-              data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
-    </tr>
-  <% end %>
+<tr>
+        <% @fields.each do |field| %>
+          <th><%= field.label %></th>
+        <% end %>
+      </tr>
+      <% @countRes.times do |count| %>
+      <tr>
+        <% fields = @responses.where(:counter=>count+1) %>
+        <% fields.each do |field| %>
+          <td><%= field.value %></td>
+        <% end %>
+        <td><%= link_to 'Show', form_response_path(@form,count+1), class: 'btn btn-primary' %></td>
+  <td><%= link_to 'Destroy', form_response_path(@form,count+1), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      </tr>
+      <% end %>
+  
 </table>
 </div>
 <% else %>

@@ -2,18 +2,18 @@
   <div>
     <h1>Message Details</h2>
   </div>
+  <%= link_to 'Back', form_responses_path(@form), class: 'btn btn-info' %>
   <div class="table-responsive">
     <table class="table">
       <tr>
-        <th>Name</th>
-        <th>Mobile</th>
-        <th colspan="2"></th>
+        <% @fields.each do |field| %>
+          <th><%= field.label %></th>
+        <% end %>
       </tr>
       <tr>
-        <td><%= @response.name %></td>
-        <td><%= @response.mobile %></td>
-        <td></td>
-        <td></td>
+        <% @responses.each do |field| %>
+          <td><%= field.value %></td>
+        <% end %>
       </tr>
     </table>
   </div>

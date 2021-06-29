@@ -2,38 +2,54 @@ class Api::SaveForm::ResponsesController < ApplicationController
 
   def index
     @form = Form.find(params[:form_id])
-    @responses = @form.responses
+    @responses = @form.responses;
+    @fields = @form.fields;
+    @countRes = @responses.length<1?0:@responses.maximum('counter');
   end
 
   def show
-    @response = Response.find(params[:id])
+    @form = Form.find(params[:form_id]);
+    @fields = @form.fields;
+    @responses = @form.responses.where(:counter=>params[:id])
   end
 
   def destroy
-    @response = Response.find(params[:id])
-    form_id = @response.form_id
-    @response.destroy
-   
-    redirect_to form_responses_path(form_id)
+    @form = Form.find(params[:form_id]);
+    @responses = @form.responses.where(:counter=>params[:id])
+    @responses.each do |res|
+      Response.destroy(res.id)
+    end
+    redirect_to form_responses_path(@form)
   end
 
   protect_from_forgery with: :null_session
   def create
     @form = Form.find(params[:form_id]);
     countRes = @form.responses.length<1?0:@form.responses.maximum('counter');
+    newDatas = []
     @form.fields.each do |field|
-      newData = { 
-        :field_id => params[field.id],
-        :value => params[:value],
+      newDatas[newDatas.length] = { 
+        :field_id => field.id,
+        :value => params['field'+field.id.to_s],
         :counter => countRes + 1,
         :form_id => params[:form_id]
       }
     end
-    if @form.responses.create(newData)
+    success = false;
+    newDatas.each do |newData|
+      if @form.responses.create(newData)
+        success = true
+      else
+        success = false
+        break
+      end
+    end
+    if success
       render :json => { :response => 'Successfully Sent.' }
     else
       render :json => { :response => 'Something Went Wrong!' }, :status=> 404
     end
+    
   end
 
   protect_from_forgery with: :null_session
@@ -42,7 +58,7 @@ class Api::SaveForm::ResponsesController < ApplicationController
     @fields = @form.fields
 
     data = { form_id: params[:id] };
-    formHtml = '<style>
+    style = '<style>
       .container{
         width: 100%;
         max-width: 90%;
@@ -66,29 +82,33 @@ class Api::SaveForm::ResponsesController < ApplicationController
         cursor: pointer;
       }
     </style>';
-    formHtml += '<form id="sendMsgForm">';
-    
+    formHtml = '<form onsubmit="sendMail()">';
+    fieldsData = []
     @fields.each do |field|
-      data[field.id] = `$('##{field.label}').val()`
-      formHtml += '<div class="form-group"><input id="%{n}" class="form-control" type="%{t}" name="%{n}" placeholder="Enter %{p}"/></div>' % { n: field.label, t: field.elementtype, p: field.label.upcase_first }
+      elementid = "field#{field.id}";
+      fieldsData[fieldsData.length] = field.id;
+      formHtml += '<div class="form-group"><input id="%{id}" class="form-control" type="%{t}" name="%{id}" placeholder="Enter %{p}"/></div>' % { id: elementid, n: field.label, t: field.elementtype, p: field.label.upcase_first }
     end
     formHtml += '<button class="btn" type="submit">Submit</button></form>';
-    formHtml += "<script>function sendMail(){
-      event.preventDefault();
-      $.ajax({
-        url: 'http://localhost:3000/api/save_form/responses',
-        method: 'post',
-        data: #{data.to_json},
-        complete: function(data){
-          console.log(data);
-        }
-      });
-      $('#sendMsgForm').submit(function(e){
-        e.preventDefault();
-        sendMail();
-      })
-    }</script>"
-    render :json => { :response => formHtml }
+    script = "datas = #{data.to_json}
+    fields = #{fieldsData}
+    function sendMail(){
+        event.preventDefault();
+        fields.forEach(field=>{
+          datas['field'+field] = $(`#field${field}`).val()
+        })
+        $.ajax({
+          url: 'http://localhost:3000/api/save_form/responses',
+          method: 'post',
+          data: datas,
+          complete: function(data){
+            console.log(data);
+            alert(data.responseJSON.response);
+          }
+        });
+      }"
+    fullHtmlCode = style + formHtml;
+    render :json => { :response => fullHtmlCode, :script => script }
   end
 
 
