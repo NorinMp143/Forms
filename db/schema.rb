@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_28_122931) do
+ActiveRecord::Schema.define(version: 2021_07_09_071535) do
 
   create_table "fields", force: :cascade do |t|
     t.integer "order"
@@ -30,9 +30,6 @@ ActiveRecord::Schema.define(version: 2021_06_28_122931) do
   end
 
   create_table "responses", force: :cascade do |t|
-    t.string "value"
-    t.integer "counter"
-    t.integer "field_id"
     t.integer "form_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
