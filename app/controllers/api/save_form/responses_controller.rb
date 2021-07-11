@@ -6,7 +6,7 @@ class Api::SaveForm::ResponsesController < ApplicationController
 
   def show
     @form = Form.find(params[:form_id]);
-    @responses = @form.responses.find(params[:id])
+    @response = @form.responses.find(params[:id])
   end
 
   def destroy
