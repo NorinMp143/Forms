@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  form: one
+  field: one
+  response: one
+  value: MyString
+
+two:
+  form: two
+  field: two
+  response: two
+  value: MyString
