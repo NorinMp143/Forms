@@ -2,50 +2,46 @@ class Api::SaveForm::ResponsesController < ApplicationController
 
   def index
     @form = Form.find(params[:form_id])
-    @responses = @form.responses;
-    @fields = @form.fields;
-    @countRes = @responses.length<1?0:@responses.maximum('counter');
   end
 
   def show
     @form = Form.find(params[:form_id]);
-    @fields = @form.fields;
-    @responses = @form.responses.where(:counter=>params[:id])
+    @response = @form.responses.find(params[:id])
   end
 
   def destroy
     @form = Form.find(params[:form_id]);
-    @responses = @form.responses.where(:counter=>params[:id])
-    @responses.each do |res|
-      Response.destroy(res.id)
-    end
+    @response = @form.responses.find(params[:id])
+    @response.destroy
     redirect_to form_responses_path(@form)
   end
 
   protect_from_forgery with: :null_session
   def create
-    @form = Form.find(params[:form_id]);
-    countRes = @form.responses.length<1?0:@form.responses.maximum('counter');
-    newDatas = []
-    @form.fields.each do |field|
-      newDatas[newDatas.length] = { 
-        :field_id => field.id,
-        :value => params['field'+field.id.to_s],
-        :counter => countRes + 1,
-        :form_id => params[:form_id]
-      }
-    end
-    success = false;
-    newDatas.each do |newData|
-      if @form.responses.create(newData)
-        success = true
-      else
-        success = false
-        break
+    @response = Response.new(res_params)
+    if @response.save
+      newDatas = []
+      @response.form.fields.each do |field|
+        newDatas[newDatas.length] = { 
+          :field_id => field.id,
+          :value => params['field'+field.id.to_s],
+          :form_id => params[:form_id]
+        }
       end
-    end
-    if success
-      render :json => { :response => 'Successfully Sent.' }
+      success = false;
+      newDatas.each do |newData|
+        if @response.response_data.create(newData)
+          success = true
+        else
+          success = false
+          break
+        end
+      end
+      if success
+        render :json => { :response => 'Successfully Sent.' }
+      else
+        render :json => { :response => 'Something Went Wrong!' }, :status=> 404
+      end
     else
       render :json => { :response => 'Something Went Wrong!' }, :status=> 404
     end
@@ -111,5 +107,9 @@ class Api::SaveForm::ResponsesController < ApplicationController
     render :json => { :response => fullHtmlCode, :script => script }
   end
 
+  private
+  def res_params
+    params.require(:response).permit(:form_id)
+  end
 
 end

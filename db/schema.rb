@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_09_071535) do
+ActiveRecord::Schema.define(version: 2021_07_11_121748) do
 
   create_table "fields", force: :cascade do |t|
     t.integer "order"
@@ -29,6 +29,18 @@ ActiveRecord::Schema.define(version: 2021_07_09_071535) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "response_data", force: :cascade do |t|
+    t.integer "form_id", null: false
+    t.integer "field_id", null: false
+    t.integer "response_id", null: false
+    t.string "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["field_id"], name: "index_response_data_on_field_id"
+    t.index ["form_id"], name: "index_response_data_on_form_id"
+    t.index ["response_id"], name: "index_response_data_on_response_id"
+  end
+
   create_table "responses", force: :cascade do |t|
     t.integer "form_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -37,5 +49,8 @@ ActiveRecord::Schema.define(version: 2021_07_09_071535) do
   end
 
   add_foreign_key "fields", "forms"
+  add_foreign_key "response_data", "fields"
+  add_foreign_key "response_data", "forms"
+  add_foreign_key "response_data", "responses"
   add_foreign_key "responses", "forms"
 end
