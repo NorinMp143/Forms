@@ -18,7 +18,8 @@ class Api::FormsController < ApplicationController
   end
 
   def edit
-    @form = Form.find(params[:id])
+    form = Form.find(params[:id])
+    render :json => form
   end
 
   protect_from_forgery with: :null_session

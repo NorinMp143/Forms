@@ -14,11 +14,10 @@ export default function EditForm() {
   useEffect(() => {
     var isRendered = true;
     async function getValue(){
-      const response = await fetch(`http://localhost:3000/api/forms/${id}/responses`);
-      const {res, fields} = await response.json();
+      const response = await fetch(`http://localhost:3000/api/forms/${form_id}/edit`);
+      const res = await response.json();
       if(isRendered){
-        setFields(fields);
-        setResponses(res);
+        setName(res.name)
       }
     }
     getValue();
