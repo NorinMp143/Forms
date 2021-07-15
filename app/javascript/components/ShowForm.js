@@ -5,20 +5,20 @@ class ShowForm extends React.Component {
   constructor(){
     super();
     this.state = {
-      formDetails : {
-        name: 'Random Name'
-      },
-      fields : [
-        {
-          id: 1,
-          label: 'Name'
-        },
-        {
-          id: 2,
-          label: 'Email'
-        }
-      ]
+      formDetails : {},
+      fields : []
     }
+  }
+
+  componentDidMount(){
+    const { id } = this.props.match.params;
+    (async () => { 
+      const response = await fetch(`http://localhost:3000/api/forms/${id}`,{
+        method: 'get',
+      });
+      const { form, fields } = await response.json();
+      this.setState({formDetails: form, fields: fields })
+    })()
   }
 
   handleSubmitForm(e){
@@ -90,8 +90,8 @@ class ShowForm extends React.Component {
                             {/* add selected field */}
                             <select>
                               <option value='-1'>Select Field Type</option>
-                              <option value='input'>Input</option>
-                              <option value='textarea'>Textarea</option>
+                              <option selected={field.fieldtype==='input'?true:false} value='input'>Input</option>
+                              <option selected={field.fieldtype==='textarea'?true:false} value='textarea'>Textarea</option>
                             </select>
                           </div>
                           <div class="field-group">
@@ -103,9 +103,9 @@ class ShowForm extends React.Component {
                           <div class="field-group">
                             <select>
                               <option value='-1'>Select Type</option>
-                              <option value='text'>Text</option>
-                              <option value='email'>Email</option>
-                              <option value='number'>Number</option>
+                              <option selected={field.elementtype==='text'?true:false} value='text'>Text</option>
+                              <option selected={field.elementtype==='email'?true:false} value='email'>Email</option>
+                              <option selected={field.elementtype==='number'?true:false} value='number'>Number</option>
                             </select>
                           </div>
                         </div>
