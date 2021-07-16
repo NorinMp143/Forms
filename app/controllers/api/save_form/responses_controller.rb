@@ -2,18 +2,28 @@ class Api::SaveForm::ResponsesController < ApplicationController
 
   def index
     @form = Form.find(params[:form_id])
+    res = []
+    @form.responses.each_with_index do |resp, index|
+      res.push({ :id=> resp.id, :response_data => resp.response_data})
+    end
+
+    render :json => {:res=> res, :fields => @form.fields}
   end
 
   def show
     @form = Form.find(params[:form_id]);
     @response = @form.responses.find(params[:id])
+    render :json => { :fields => @form.fields, :res => @response.response_data }
   end
 
   def destroy
     @form = Form.find(params[:form_id]);
     @response = @form.responses.find(params[:id])
-    @response.destroy
-    redirect_to form_responses_path(@form)
+    if @response.destroy
+      render :json => { :statusOk => true, :res => 'Form successfully deleted.' }
+    else
+      render :json => { :statusOk => false , :res => 'Something Went Wrong!' }
+    end
   end
 
   protect_from_forgery with: :null_session
