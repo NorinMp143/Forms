@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   
+  devise_for :users
   namespace :api do
     resources :forms do
       resources :fields
@@ -14,7 +15,7 @@ Rails.application.routes.draw do
   get '*page', to: 'static#index', constraints: ->(req) do
     !req.xhr? && req.format.html?
   end
-  root 'static#index'
-  # root 'home#index'
+  # root 'static#index'
+  root 'static#home'
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
