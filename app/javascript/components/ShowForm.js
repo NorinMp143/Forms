@@ -44,7 +44,7 @@ class ShowForm extends React.Component {
     let fieldKeys = Object.keys(dataset)
     let fieldObj = {}
     fieldKeys.forEach(key=>{
-      fieldObj[key] = typeof(dataset[key])===number? null : ''
+      fieldObj[key] = typeof(dataset[key])==='number'? null : ''
     })
     fieldObj.id = this.state.fields[this.state.fields.length-1].id+1;
     fieldObj.isNew = true

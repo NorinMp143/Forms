@@ -7,19 +7,19 @@ class Api::FieldsController < ApplicationController
     
     fields.each_with_index do |field, index|
       # if new field, then create field else update field
-      if(field.respond_to?('isNew'))
+      if(field[:isNew])
         @fieldc = @form.fields.create(
           :order => index, 
-          :fieldtype=> field.fieldtype,
-          :label => field.label, 
-          :elementtype => field.elementtype
+          :fieldtype=> field[:fieldtype],
+          :label => field[:label], 
+          :elementtype => field[:elementtype]
         )
       else
-        @fieldc = @form.fields.where(:id=>field.id).update(
+        @fieldc = @form.fields.where(:id=>field[:id]).update(
           :order => index, 
-          :fieldtype=> field.fieldtype,
-          :label => field.label, 
-          :elementtype => field.elementtype
+          :fieldtype=> field[:fieldtype],
+          :label => field[:label], 
+          :elementtype => field[:elementtype]
         )
       end
     end
