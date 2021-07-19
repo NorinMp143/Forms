@@ -40,13 +40,13 @@ class ShowForm extends React.Component {
   }
 
   addField(){
-    let dataset = this.state.fields[0];
+    let dataset = this.state.fields[0] || {};
     let fieldKeys = Object.keys(dataset)
     let fieldObj = {}
     fieldKeys.forEach(key=>{
       fieldObj[key] = typeof(dataset[key])==='number'? null : ''
     })
-    fieldObj.id = this.state.fields[this.state.fields.length-1].id+1;
+    fieldObj.id = this.state.fields.length>0?this.state.fields[this.state.fields.length-1].id+1: 0;
     fieldObj.isNew = true
     this.setState({fields: [...this.state.fields, fieldObj ]})
   }
@@ -141,9 +141,9 @@ class ShowForm extends React.Component {
                           <div className="field-group">
                             <input value={field.label} placeholder="Enter Label" onChange={(e)=>this.updateFieldValues(field.id, 'label', e.target.value)} />
                           </div>
-                          <div className="field-group">
+                          {/* <div className="field-group">
                             <input placeholder="Enter Placeholder" />
-                          </div>
+                          </div> */}
                           <div className="field-group">
                             <select value={field.elementtype}
                               onChange={(e)=>this.updateFieldValues(field.id, 'elementtype', e.target.value)}
