@@ -16,3 +16,63 @@
  */
 
 @import url('https://fonts.googleapis.com/css?family=Merriweather:400,700');
+
+.navbar-light .navbar-nav .nav-link,.navbar-light .navbar-brand{
+  color: #fff;
+}
+#authpage .form {
+  max-width: calc(360px + 2rem);
+  margin: 4rem auto;
+  border: 1px solid blueviolet;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 0 24px 0px blueviolet;
+}
+.section-title {
+  margin: 1rem 0;
+}
+.section-title span {
+  background: blueviolet;
+  color: #fff;
+  font-weight: bold;
+  padding: 0.5rem 2rem;
+  display: inline-block;
+  position: relative;
+}
+.section-title span::after {
+  content: '';
+  position: absolute;
+  border-left: 30px solid blueviolet;
+  top: 0;
+  height: 0;
+  border-bottom: 40px solid transparent;
+  width: 0;
+  right: -30px;
+}
+.section-details {
+  background: #eee;
+  padding: 2rem;
+  border-radius: 8px;
+}
+.card-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+}
+.card {
+  min-width: 200px;
+  background: blueviolet;
+  color: #fff;
+  text-align: center;
+}
+.card-header {
+  border-color: #bbb;
+}
+.card-title {
+  font-size: 60px;
+  font-weight: bolder;
+}
+.card-actions a.btn {
+  background: #fff;
+  color: blueviolet;
+  font-weight: bolder;
+}

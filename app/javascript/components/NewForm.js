@@ -4,11 +4,26 @@ import { useHistory } from 'react-router-dom'
 export default function NewForm() {
   const history = useHistory();
 
-  const [name, setName] = useState('')
+  const [formData, setFormData] = useState({
+    name: '',
+    description: '',
+    namecolor: '',
+    descolor: '',
+    titleunderlinecolor: '',
+    maxwidth: '',
+    borderradius: '',
+    boxshadow: '',
+    bgcolor: '',
+    fieldcolor: '',
+    fieldbrcolor: '',
+    btncolor: '',
+    btnbgcolor:''
+  })
 
-  const updateFormValues = (value) => {
-    setName(value)
+  const updateFormValues = (value, name) => {
+    setFormData({...formData,[name]:value})
   }
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -21,7 +36,7 @@ export default function NewForm() {
         'X-CSRF-Token': csrf
       },
       body: JSON.stringify({
-        form: { name: name }
+        form: formData
       })
     });
     const { statusOk, res} = await response.json();
@@ -35,18 +50,68 @@ export default function NewForm() {
 }
 
   return (
-    <div className="container">
+    <div className="container" id="newform">
+      <div className="form">
       <h1>New Form</h1>
       <form onSubmit={handleSubmit}>
+      <div className="form-group">
+          <label htmlFor="#name">Name</label><br/>
+          <input id="name" name="name" value={formData.name} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
         <div className="form-group">
-          <label for="#name">Name</label><br/>
-          <input id="name" name="name" value={name} onChange={(e)=>updateFormValues(e.target.value)} className="form-control" />
+          <label htmlFor="#name">Description</label><br/>
+          <textarea id="name" name="name" value={formData.description} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control"></textarea>
+        </div>
+        <div className="form-group">
+          <label htmlFor="#namecolor">Name Color</label><br/>
+          <input id="namecolor" name="namecolor" value={formData.namecolor} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#descolor">Description Color</label><br/>
+          <input id="descolor" name="descolor" value={formData.descolor} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#titleunderlinecolor">Title Underline Color</label><br/>
+          <input id="titleunderlinecolor" name="titleunderlinecolor" value={formData.titleunderlinecolor} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#maxwidth">Max Width</label><br/>
+          <input id="maxwidth" name="maxwidth" value={formData.maxwidth} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#borderradius">Border Radius</label><br/>
+          <input id="borderradius" name="borderradius" value={formData.borderradius} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#boxshadow">Box Shadow</label><br/>
+          <input id="boxshadow" name="boxshadow" value={formData.boxshadow} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#bgcolor">Background Color</label><br/>
+          <input id="bgcolor" name="bgcolor" value={formData.bgcolor} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#fieldcolor">Field Color</label><br/>
+          <input id="fieldcolor" name="fieldcolor" value={formData.fieldcolor} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#fieldbrcolor">Field Border Color</label><br/>
+          <input id="fieldbrcolor" name="fieldbrcolor" value={formData.fieldbrcolor} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#btncolor">Button Color</label><br/>
+          <input id="btncolor" name="btncolor" value={formData.btncolor} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
+        </div>
+        <div className="form-group">
+          <label htmlFor="#btnbgcolor">Button Background Color</label><br/>
+          <input id="btnbgcolor" name="btnbgcolor" value={formData.btnbgcolor} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
         </div>
         <div className="form-group">
           <button type="submit" className="btn btn-success">Submit</button>
         </div>
       </form>
       <a href="/forms" className="btn btn-info">Back</a>
+      </div>
     </div>
   )
 }

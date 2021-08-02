@@ -3,13 +3,14 @@ import PropTypes from "prop-types"
 
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
+import './styles/App.scss';
 import Forms from './Forms';
 import ShowForm from "./ShowForm";
 import EditForm from './EditForm';
 import NewForm from './NewForm';
 import Responses from './Responses'
 import ShowResponse from './ShowResponse'
-
+import Preview from './Preview'
 class App extends React.Component {
   render () {
     return (
@@ -22,7 +23,7 @@ class App extends React.Component {
             <Route exact path="/forms/:id/edit" component={EditForm} />
             <Route exact path="/forms/:id/responses" component={Responses} />
             <Route exact path="/forms/:id/responses/:res_id" component={ShowResponse} />
-            <Redirect from="/" to="/forms" />
+            <Route exact path="/forms/:id/preview" component={Preview} />
           </Switch>
         </BrowserRouter>
       </React.Fragment>

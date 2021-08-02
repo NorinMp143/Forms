@@ -43,13 +43,14 @@ class Forms extends React.Component {
             <tbody>
             <tr>
               <th>Name</th>
-              <th colSpan="2"></th>
+              <th colSpan="5"></th>
             </tr>
             {
               this.state.forms.map(form=>(
                 <tr key={form.id}>
                   <td>{form.name}</td>
                   <td><a className="btn btn-primary" href={`/forms/${form.id}`}>Show</a></td>
+                  <td><a className="btn btn-primary" href={`/forms/${form.id}/preview`}>Preview</a></td>
                   <td><a className="btn btn-warning" href={`/forms/${form.id}/edit`}>Edit</a></td>
                   <td><button className="btn btn-danger" onClick={()=>this.handleClick(form.id)} >Destroy</button></td>
                   <td><a className="btn btn-info" href={`/forms/${form.id}/responses`}>All Responses</a></td>
