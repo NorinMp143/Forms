@@ -56,7 +56,7 @@ class Api::FormsController < ApplicationController
   
   private
   def form_params
-    params.require(:form).permit(:name)
+    params.require(:form).permit(:name, :description, :namecolor, :descolor, :titleunderlinecolor, :maxwidth, :borderradius, :boxshadow, :bgcolor, :fieldcolor, :fieldbrcolor, :btncolor, :btnbgcolor)
   end
   
 end
