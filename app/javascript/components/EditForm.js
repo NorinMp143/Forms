@@ -71,8 +71,8 @@ export default function EditForm() {
           <input id="name" name="name" value={formData.name} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control" />
         </div>
         <div className="form-group">
-          <label htmlFor="#name">Description</label><br/>
-          <textarea id="name" name="name" value={formData.description} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control"></textarea>
+          <label htmlFor="#description">Description</label><br/>
+          <textarea id="description" name="description" value={formData.description} onChange={(e)=>updateFormValues(e.target.value,e.target.id)} className="form-control"></textarea>
         </div>
         <div className="form-group">
           <label htmlFor="#namecolor">Name Color</label><br/>
