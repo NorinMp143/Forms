@@ -24,9 +24,29 @@ export default function NewForm() {
     setFormData({...formData,[name]:value})
   }
 
+  /**
+   * 
+   * checking that is any field which is empty, if it is then it return truw so we don't make call to
+   * our api
+   * @param no params
+   * @returns true | false, boolean
+   * 
+   */
+  
+   function isAnyFieldEmpty(){
+    const fields = Object.keys(formData).filter(key=>formData[key]===null)
+    if(fields.length){
+      return true
+    }else{
+      return false
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(isAnyFieldEmpty){
+      return alert('Please fill the details.')
+    }
   (async()=>{
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
     const response = await fetch('http://localhost:3000/api/forms',{
