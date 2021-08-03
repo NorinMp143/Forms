@@ -3,5 +3,6 @@ class StaticController < ApplicationController
   def index
   end
   def home
+    @form = Form.all
   end
 end
