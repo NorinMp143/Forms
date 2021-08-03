@@ -73,12 +73,19 @@ class Api::SaveForm::ResponsesController < ApplicationController
       form {
         padding: 3rem 2rem;
         box-shadow: 0 0 50px 0 aliceblue;
+        max-width: 320px;
+        margin: 0 auto;
       }
       .form-group {
         margin-bottom: 20px;
       }
       .form-control {
         width: 100%;
+        text-indent: 10px;
+        font-size: 14px;
+        padding: 5px 0;
+        border-radius: 4px;
+        border: 1px solid #ccc;
       }
       .btn{
         background: aliceblue;
@@ -87,15 +94,61 @@ class Api::SaveForm::ResponsesController < ApplicationController
         border: 2px solid aquamarine;
         cursor: pointer;
       }
+      .btn[data-align="center"]{
+        text-align: center;
+      }
+      .text-center{
+        text-align: center;
+      }
+      .section-header h3 {
+        font-size: 50px;
+        text-align: center;
+        font-weight: 600;
+        position: relative;
+        padding-bottom: 15px;
+        margin: 20px auto 40px;
+        font-family: "exo 2";
+        color: #220a09;
+      }
+      .section-header h3::after {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 40px;
+        height: 3px;
+        background: #e71c24;
+        bottom: 0;
+        left: calc(50% - 20px);
+      }
+      .section-header h3::before {
+        content: "";
+        position: absolute;
+        display: block;
+        width: 120px;
+        height: 1px;
+        background: #ddd;
+        bottom: 1px;
+        left: calc(50% - 60px);
+      }
     </style>';
     formHtml = '<form onsubmit="sendMail()">';
+    formHtml += '<header class="section-header">
+      <h3 class="section-title">%{name}</h3>
+      </header>' % { name: @form.name }
     fieldsData = []
     @fields.each do |field|
       elementid = "field#{field.id}";
       fieldsData[fieldsData.length] = field.id;
-      formHtml += '<div class="form-group"><input id="%{id}" class="form-control" type="%{t}" name="%{id}" placeholder="Enter %{p}"/></div>' % { id: elementid, n: field.label, t: field.elementtype, p: field.label.upcase_first }
+      formHtml += '<div class="form-group">'
+      if(field.fieldtype==='input')
+        formHtml += '<input id="%{id}" class="form-control" type="%{t}" name="%{id}" placeholder="Enter %{p}"/>' % { id: elementid, n: field.label, t: field.elementtype, p: field.label.upcase_first }
+      else(field.fieldtype === 'textarea')
+        formHtml += '<textarea id="%{id}" rows="4" class="form-control" type="%{t}" name="%{id}" placeholder="Enter %{p}"></textarea>' % { id: elementid, n: field.label, t: field.elementtype, p: field.label.upcase_first }
+      end
+      formHtml += '</div>'
+      
     end
-    formHtml += '<button class="btn" type="submit">Submit</button></form>';
+    formHtml += '<div class="text-center"><button class="btn" type="submit" data-align="center">Submit</button></div></form>';
     script = "datas = #{data.to_json}
     fields = #{fieldsData}
     function sendMail(){
@@ -119,7 +172,7 @@ class Api::SaveForm::ResponsesController < ApplicationController
 
   private
   def res_params
-    params.require(:response).permit(:form_id)
+    params.permit(:form_id)
   end
 
 end

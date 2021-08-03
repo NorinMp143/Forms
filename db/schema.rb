@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_15_185314) do
+ActiveRecord::Schema.define(version: 2021_07_21_184218) do
 
   create_table "fields", force: :cascade do |t|
     t.integer "order"
@@ -27,6 +27,18 @@ ActiveRecord::Schema.define(version: 2021_07_15_185314) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "description"
+    t.string "namecolor"
+    t.string "descolor"
+    t.string "titleunderlinecolor"
+    t.string "maxwidth"
+    t.string "borderradius"
+    t.string "boxshadow"
+    t.string "bgcolor"
+    t.string "fieldcolor"
+    t.string "fieldbrcolor"
+    t.string "btncolor"
+    t.string "btnbgcolor"
   end
 
   create_table "response_data", force: :cascade do |t|

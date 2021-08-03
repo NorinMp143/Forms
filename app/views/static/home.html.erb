@@ -1,6 +1,24 @@
-<% if user_signed_in? %>
-  <%= link_to 'Logout', destroy_user_session_path, method: :delete %>
-<% else %>
-  <%= link_to 'Sign Up', new_user_registration_path %>
-  <%= link_to 'Login', new_user_session_path %>
-<% end %>
+<main>
+  <section id="details">
+    <div class="container">
+      <div class="dashboard">
+        <div class="section-title">
+          <span>Quick View</span>
+        </div>
+        <div class="section-details">
+          <div class="card-wrapper">
+            <div class="card">
+              <h5 class="card-header">Total Forms</h5>
+              <div class="card-body">
+                <h5 class="card-title">3</h5>
+                <div class="card-actions">
+                  <a class="btn" href="/forms">View</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
