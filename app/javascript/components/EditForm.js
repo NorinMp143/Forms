@@ -86,6 +86,13 @@ export default function EditForm() {
           msg = 'please write one of format 23px, 100%, 4rem, 6em.'
         }
         break;
+      case 'borderradius':
+        result = cssWidthProperty(value)
+        if(!result){
+          fieldValidValues[fieldName] = result;
+          msg = 'please write one of format 23px, 100%, 4rem, 6em.'
+        }
+        break;
       default:
         break;
     }
@@ -149,6 +156,9 @@ export default function EditForm() {
     e.preventDefault();
     if(isAnyFieldEmpty()){
       return alert('Please fill the details.')
+    }
+    if(!state.formValid){
+      return alert('Please check our form.')
     }
     (async()=>{ 
       const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
