@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import {minMaxLength} from './helpers/validations'
+import {minMaxLength, validateAlphabet, cssWidthProperty} from './helpers/validations'
 import {FormErrors} from './FormErrors'
 
 export default function EditForm() {
@@ -60,15 +60,30 @@ export default function EditForm() {
     let fieldValidationErrors = state.formErrors;
     let fieldValidValues = state.fieldValids;
     let msg = '';
+    let result;
     switch(fieldName) {
       case 'name':
-        const result = new RegExp(/^[A-Za-z]+$/).test(value);
+        result = validateAlphabet(value);
         if(!result){
           fieldValidValues[fieldName] = result;
           msg = 'please write a-z letter only.'
         }else{
           fieldValidValues[fieldName] = !minMaxLength(value, 3);
           msg = 'please type atleast 3 character.';
+        }
+        break;
+      case 'description':
+        result = validateAlphabet(value);
+        if(!result){
+          fieldValidValues[fieldName] = result;
+          msg = 'please write a-z letter only.'
+        }
+        break;
+      case 'maxwidth':
+        result = cssWidthProperty(value)
+        if(!result){
+          fieldValidValues[fieldName] = result;
+          msg = 'please write one of format 23px, 100%, 4rem, 6em.'
         }
         break;
       default:
