@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
+import {minMaxLength, validateAlphabet, cssWidthProperty} from './helpers/validations'
+import {FormErrors} from './FormErrors'
 
 export default function EditForm() {
   const { id: form_id } = useParams()
@@ -20,9 +22,102 @@ export default function EditForm() {
     btncolor: '',
     btnbgcolor:''
   })
+  const [state, setState] = useState({
+    formErrors : {
+      name: '',
+      description: '',
+      namecolor: '',
+      descolor: '',
+      titleunderlinecolor: '',
+      maxwidth: '',
+      borderradius: '',
+      boxshadow: '',
+      bgcolor: '',
+      fieldcolor: '',
+      fieldbrcolor: '',
+      btncolor: '',
+      btnbgcolor:''
+    },
+    fieldValids : {
+      name: false,
+      description: false,
+      namecolor: false,
+      descolor: false,
+      titleunderlinecolor: false,
+      maxwidth: false,
+      borderradius: false,
+      boxshadow: false,
+      bgcolor: false,
+      fieldcolor: false,
+      fieldbrcolor: false,
+      btncolor: false,
+      btnbgcolor: false
+    },
+    formValid: false
+  })
+
+  function validateField(fieldName, value) {
+    let fieldValidationErrors = state.formErrors;
+    let fieldValidValues = state.fieldValids;
+    let msg = '';
+    let result;
+    switch(fieldName) {
+      case 'name':
+        result = validateAlphabet(value);
+        if(!result){
+          fieldValidValues[fieldName] = result;
+          msg = 'please write a-z letter only.'
+        }else{
+          fieldValidValues[fieldName] = !minMaxLength(value, 3);
+          msg = 'please type atleast 3 character.';
+        }
+        break;
+      case 'description':
+        result = validateAlphabet(value);
+        if(!result){
+          fieldValidValues[fieldName] = result;
+          msg = 'please write a-z letter only.'
+        }
+        break;
+      case 'maxwidth':
+        result = cssWidthProperty(value)
+        if(!result){
+          fieldValidValues[fieldName] = result;
+          msg = 'please write one of format 23px, 100%, 4rem, 6em.'
+        }
+        break;
+      case 'borderradius':
+        result = cssWidthProperty(value)
+        if(!result){
+          fieldValidValues[fieldName] = result;
+          msg = 'please write one of format 23px, 100%, 4rem, 6em.'
+        }
+        break;
+      default:
+        break;
+    }
+    fieldValidationErrors[fieldName] = fieldValidValues[fieldName] ? '' : msg;
+    setState({formErrors: fieldValidationErrors, fieldValids: fieldValidValues});
+    validateForm();
+  }
+
+  function validateForm() {
+    function getFormValid(){
+      const keys = Object.keys(state.fieldValids);
+      for(let i=0;i<keys.length;i++){
+        if(state.fieldValids[keys[i]]===false){
+          return false
+        }
+      }
+      return true;
+    }
+    const isFormValid = getFormValid()
+    setState({...state,formValid: isFormValid});
+  }
 
   const updateFormValues = (value, name) => {
     setFormData({...formData,[name]:value})
+    validateField(name, value)
   }
 
   useEffect(() => {
@@ -62,6 +157,9 @@ export default function EditForm() {
     if(isAnyFieldEmpty()){
       return alert('Please fill the details.')
     }
+    if(!state.formValid){
+      return alert('Please check our form.')
+    }
     (async()=>{ 
       const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
       const response = await fetch(`http://localhost:3000/api/forms/${form_id}`,{
@@ -87,6 +185,9 @@ export default function EditForm() {
     <div className="container" id="editform">
       <div className="form">
       <h1>Edit Form</h1>
+      <div className="panel panel-default">
+        <FormErrors formErrors={state.formErrors} />
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="#name">Name</label><br/>

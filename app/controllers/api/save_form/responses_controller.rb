@@ -141,7 +141,9 @@ class Api::SaveForm::ResponsesController < ApplicationController
       fieldsData[fieldsData.length] = field.id;
       formHtml += '<div class="form-group">'
       if(field.fieldtype==='input')
-        formHtml += '<input id="%{id}" class="form-control" type="%{t}" name="%{id}" placeholder="Enter %{p}"/>' % { id: elementid, n: field.label, t: field.elementtype, p: field.label.upcase_first }
+        formHtml += '<input id="%{id}" class="form-control" type="%{t}" name="%{id}"' % { id: elementid, n: field.label, t: field.elementtype }
+        formHtml += field.elementtype==='number'?' oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="10" ': ''
+        formHtml += ' placeholder="Enter %{p}"/>' % {p: field.label.upcase_first}
       else(field.fieldtype === 'textarea')
         formHtml += '<textarea id="%{id}" rows="4" class="form-control" type="%{t}" name="%{id}" placeholder="Enter %{p}"></textarea>' % { id: elementid, n: field.label, t: field.elementtype, p: field.label.upcase_first }
       end
@@ -149,13 +151,48 @@ class Api::SaveForm::ResponsesController < ApplicationController
       
     end
     formHtml += '<div class="text-center"><button class="btn" type="submit" data-align="center">Submit</button></div></form>';
+    
+    emailRegEx = '/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/'
+
     script = "datas = #{data.to_json}
     fields = #{fieldsData}
+    emailRegExp = #{emailRegEx}
     function sendMail(){
         event.preventDefault();
+        function validateFields(type, value){
+          switch(type){
+            case 'email':
+              var pattern = new RegExp(emailRegExp);
+
+              if (!pattern.test(value)) {
+                return {
+                  isValid : false,
+                  errMsg : 'Please enter valid email address.'
+                }
+              }
+              return {
+                isValid : true,
+              }
+              break;
+            default:
+              return {
+                isValid : true,
+              }
+              break;
+          }
+        }
+        let isFormValid;
         fields.forEach(field=>{
           datas['field'+field] = $(`#field${field}`).val()
+          const type = $(`#field${field}`).attr('type')
+          const result = validateFields(type,datas['field'+field])
+          if(!result.isValid){
+            isFormValid = result;
+          }
         })
+        if(isFormValid){
+          return alert(isFormValid.errMsg)
+        }
         $.ajax({
           url: 'http://localhost:3000/api/save_form/responses',
           method: 'post',
