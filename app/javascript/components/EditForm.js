@@ -62,8 +62,14 @@ export default function EditForm() {
     let msg = '';
     switch(fieldName) {
       case 'name':
-        fieldValidValues[fieldName] = !minMaxLength(value, 3);
-        msg = 'is invalid';
+        const result = new RegExp(/^[A-Za-z]+$/).test(value);
+        if(!result){
+          fieldValidValues[fieldName] = result;
+          msg = 'please write a-z letter only.'
+        }else{
+          fieldValidValues[fieldName] = !minMaxLength(value, 3);
+          msg = 'please type atleast 3 character.';
+        }
         break;
       default:
         break;

@@ -141,7 +141,9 @@ class Api::SaveForm::ResponsesController < ApplicationController
       fieldsData[fieldsData.length] = field.id;
       formHtml += '<div class="form-group">'
       if(field.fieldtype==='input')
-        formHtml += '<input id="%{id}" class="form-control" type="%{t}" name="%{id}" placeholder="Enter %{p}"/>' % { id: elementid, n: field.label, t: field.elementtype, p: field.label.upcase_first }
+        formHtml += '<input id="%{id}" class="form-control" type="%{t}" name="%{id}"' % { id: elementid, n: field.label, t: field.elementtype }
+        formHtml += field.elementtype==='number'?' maxlength="10" ': ''
+        formHtml += ' placeholder="Enter %{p}"/>' % {p: field.label.upcase_first}
       else(field.fieldtype === 'textarea')
         formHtml += '<textarea id="%{id}" rows="4" class="form-control" type="%{t}" name="%{id}" placeholder="Enter %{p}"></textarea>' % { id: elementid, n: field.label, t: field.elementtype, p: field.label.upcase_first }
       end
@@ -154,13 +156,16 @@ class Api::SaveForm::ResponsesController < ApplicationController
     function validateFields(type, value){
       switch(type){
         case 'email':
-          var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+          var pattern = new RegExp(`/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/`);
 
           if (!pattern.test(value)) {
             return {
               isValid : false,
-              errMsg : "Please enter valid email address."
+              errMsg : 'Please enter valid email address.'
             }
+          }
+          return {
+            isValid : true,
           }
           break;
         default:
