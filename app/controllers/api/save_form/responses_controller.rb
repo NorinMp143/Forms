@@ -151,10 +151,31 @@ class Api::SaveForm::ResponsesController < ApplicationController
     formHtml += '<div class="text-center"><button class="btn" type="submit" data-align="center">Submit</button></div></form>';
     script = "datas = #{data.to_json}
     fields = #{fieldsData}
+    function validateFields(type, value){
+      switch(type){
+        case 'email':
+          var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+
+          if (!pattern.test(value)) {
+            return {
+              isValid : false,
+              errMsg : "Please enter valid email address."
+            }
+          }
+          break;
+        default:
+          break;
+      }
+    }
     function sendMail(){
         event.preventDefault();
         fields.forEach(field=>{
           datas['field'+field] = $(`#field${field}`).val()
+          const type = $(`#field${field}`).attr('type')
+          const result = validateFields(type,datas['field'+field])
+          if(!result.isValid){
+            return alert(result.errMsg)
+          }
         })
         $.ajax({
           url: 'http://localhost:3000/api/save_form/responses',
