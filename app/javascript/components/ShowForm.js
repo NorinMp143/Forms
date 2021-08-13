@@ -16,8 +16,13 @@ class ShowForm extends React.Component {
       const response = await fetch(`http://localhost:3000/api/forms/${id}`,{
         method: 'get',
       });
-      const { form, fields } = await response.json();
-      this.setState({formDetails: form, fields: fields })
+      const res = await response.json();
+      if(res.err){
+        this.props.history.push('/forms')
+      }else{
+        const { form, fields } = res;
+        this.setState({formDetails: form, fields: fields })
+      }
     })()
   }
 

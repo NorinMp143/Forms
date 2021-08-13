@@ -1,28 +1,44 @@
 class Api::SaveForm::ResponsesController < ApplicationController
 
   def index
-    @form = Form.find(params[:form_id])
-    res = []
-    @form.responses.each_with_index do |resp, index|
-      res.push({ :id=> resp.id, :response_data => resp.response_data})
-    end
+    begin
+      @form = current_user.forms.find(params[:form_id])
+      res = []
+      @form.responses.each_with_index do |resp, index|
+        res.push({ :id=> resp.id, :response_data => resp.response_data})
+      end
 
-    render :json => {:res=> res, :fields => @form.fields}
+      render :json => {:res=> res, :fields => @form.fields}
+    rescue
+      render :json => {:err => true, :msg=> 'not authrized'}
+    end
   end
 
   def show
-    @form = Form.find(params[:form_id]);
-    @response = @form.responses.find(params[:id])
-    render :json => { :fields => @form.fields, :res => @response.response_data }
+    begin
+      @form = current_user.forms.find(params[:form_id]);
+      @response = @form.responses.find(params[:id])
+      if(@response)
+        render :json => { :fields => @form.fields, :res => @response.response_data }
+      else
+        render :json => {:err => true, :msg=> 'not authrized'}
+      end
+    rescue
+      render :json => {:err => true, :msg=> 'not authrized'}
+    end
   end
 
   def destroy
-    @form = Form.find(params[:form_id]);
-    @response = @form.responses.find(params[:id])
-    if @response.destroy
-      render :json => { :statusOk => true, :res => 'Form successfully deleted.' }
-    else
-      render :json => { :statusOk => false , :res => 'Something Went Wrong!' }
+    begin
+      @form = current_user.forms.find(params[:form_id]);
+      @response = @form.responses.find(params[:id])
+      if @response.destroy
+        render :json => { :statusOk => true, :res => 'Form successfully deleted.' }
+      else
+        render :json => { :statusOk => false , :res => 'Something Went Wrong!' }
+      end
+    rescue
+      render :json => {:err => true, :msg=> 'not authrized'}
     end
   end
 

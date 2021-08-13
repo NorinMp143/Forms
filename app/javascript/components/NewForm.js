@@ -5,6 +5,7 @@ import {FormErrors} from './FormErrors'
 
 export default function NewForm() {
   const history = useHistory();
+  const user_id = localStorage.getItem('user_id');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -19,7 +20,8 @@ export default function NewForm() {
     fieldcolor: '',
     fieldbrcolor: '',
     btncolor: '',
-    btnbgcolor:''
+    btnbgcolor:'',
+    user_id: user_id
   })
 
   const [state, setState] = useState({
@@ -140,12 +142,12 @@ export default function NewForm() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(isAnyFieldEmpty){
-      return alert('Please fill the details.')
-    }
-    if(!state.formValid){
-      return alert('Please check our form.')
-    }
+    // if(isAnyFieldEmpty){
+    //   return alert('Please fill the details.')
+    // }
+    // if(!state.formValid){
+    //   return alert('Please check our form.')
+    // }
   (async()=>{
     const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
     const response = await fetch('http://localhost:3000/api/forms',{

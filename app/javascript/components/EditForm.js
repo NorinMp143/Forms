@@ -6,6 +6,7 @@ import {FormErrors} from './FormErrors'
 export default function EditForm() {
   const { id: form_id } = useParams()
   const history = useHistory();
+  const user_id = localStorage.getItem('user_id');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -20,7 +21,8 @@ export default function EditForm() {
     fieldcolor: '',
     fieldbrcolor: '',
     btncolor: '',
-    btnbgcolor:''
+    btnbgcolor:'',
+    user_id: user_id
   })
   const [state, setState] = useState({
     formErrors : {
@@ -126,7 +128,12 @@ export default function EditForm() {
       const response = await fetch(`http://localhost:3000/api/forms/${form_id}/edit`);
       const res = await response.json();
       if(isRendered){
-        setFormData(res)
+        if(res.err){
+          history.push('/forms')
+        }
+        else{
+          setFormData(res)
+        }
       }
     }
     getValue();
