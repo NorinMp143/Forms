@@ -41,19 +41,19 @@ export default function EditForm() {
       btnbgcolor:''
     },
     fieldValids : {
-      name: false,
-      description: false,
-      namecolor: false,
-      descolor: false,
-      titleunderlinecolor: false,
-      maxwidth: false,
-      borderradius: false,
-      boxshadow: false,
-      bgcolor: false,
-      fieldcolor: false,
-      fieldbrcolor: false,
-      btncolor: false,
-      btnbgcolor: false
+      name: true,
+      description: true,
+      namecolor: true,
+      descolor: true,
+      titleunderlinecolor: true,
+      maxwidth: true,
+      borderradius: true,
+      boxshadow: true,
+      bgcolor: true,
+      fieldcolor: true,
+      fieldbrcolor: true,
+      btncolor: true,
+      btnbgcolor: true
     },
     formValid: false
   })
@@ -67,18 +67,23 @@ export default function EditForm() {
       case 'name':
         result = validateAlphabet(value);
         if(!result){
-          fieldValidValues[fieldName] = result;
+          fieldValidValues[fieldName] = false;
           msg = 'please write a-z letter only.'
         }else{
-          fieldValidValues[fieldName] = !minMaxLength(value, 3);
-          msg = 'please type atleast 3 character.';
+          fieldValidValues[fieldName] = true;
+          if(minMaxLength(value, 3)){
+            fieldValidValues[fieldName] = false;
+            msg = 'please type atleast 3 character.';
+          }
         }
         break;
       case 'description':
         result = validateAlphabet(value);
         if(!result){
-          fieldValidValues[fieldName] = result;
+          fieldValidValues[fieldName] = false;
           msg = 'please write a-z letter only.'
+        }else{
+          fieldValidValues[fieldName] = true
         }
         break;
       case 'maxwidth':
@@ -86,6 +91,8 @@ export default function EditForm() {
         if(!result){
           fieldValidValues[fieldName] = result;
           msg = 'please write one of format 23px, 100%, 4rem, 6em.'
+        }else{
+          fieldValidValues[fieldName] = true
         }
         break;
       case 'borderradius':
@@ -93,13 +100,15 @@ export default function EditForm() {
         if(!result){
           fieldValidValues[fieldName] = result;
           msg = 'please write one of format 23px, 100%, 4rem, 6em.'
+        }else{
+          fieldValidValues[fieldName] = true
         }
         break;
       default:
         break;
     }
     fieldValidationErrors[fieldName] = fieldValidValues[fieldName] ? '' : msg;
-    setState({formErrors: fieldValidationErrors, fieldValids: fieldValidValues});
+    setState({...state, formErrors: fieldValidationErrors, fieldValids: fieldValidValues});
     validateForm();
   }
 
@@ -150,7 +159,7 @@ export default function EditForm() {
    */
   
   function isAnyFieldEmpty(){
-    const fields = Object.keys(formData).filter(key=>formData[key]===null)
+    const fields = Object.keys(formData).filter(key=>formData[key]==='')
     if(fields.length){
       return true
     }else{
