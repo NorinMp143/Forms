@@ -1,20 +1,27 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 
 export default function Responses() {
   const [responses, setResponses] = useState([])
   const [fields, setFields] = useState([])
 
   const { id } = useParams()
+  const history = useHistory()
 
   useEffect(() => {
     var isRendered = true;
     async function getValue(){
       const response = await fetch(`http://localhost:3000/api/forms/${id}/responses`);
-      const {res, fields} = await response.json();
+      const resp = await response.json();
       if(isRendered){
-        setFields(fields);
-        setResponses(res);
+        if(resp.err){
+          history.push('/forms')
+        }
+        else{
+          const {res, fields} = resp;
+          setFields(fields);
+          setResponses(res);
+        }
       }
     }
     getValue();

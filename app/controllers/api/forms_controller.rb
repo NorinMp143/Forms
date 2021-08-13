@@ -1,12 +1,17 @@
 class Api::FormsController < ApplicationController
   def index
-    forms = Form.all
+    # forms = Form.all
+    forms = current_user.forms
     render :json => forms
   end
 
   def show
-    form = Form.find(params[:id])
-    render :json => {:form=> form, :fields=> form.fields }
+    begin
+      form = current_user.forms.find(params[:id]) 
+      render :json => {:form=> form, :fields=> form.fields }
+    rescue
+      render :json => {:err => true, :msg=> 'not authrized'}
+    end
   end
 
   def testing
@@ -18,8 +23,13 @@ class Api::FormsController < ApplicationController
   end
 
   def edit
-    form = Form.find(params[:id])
-    render :json => form
+    begin
+      form = current_user.forms.find(params[:id])
+      render :json => form
+    rescue
+      render :json => {:err => true, :msg=> 'not authrized'}
+    end
+
   end
 
   protect_from_forgery with: :null_session
@@ -45,18 +55,22 @@ class Api::FormsController < ApplicationController
   end
 
   def destroy
-    @form = Form.find(params[:id])
-    if @form.destroy
-      render :json => { :statusOk => true, :res => 'Form successfully deleted.' }
-    else
-      render :json => { :statusOk => false , :res => 'Something Went Wrong!' }
+    begin
+      @form = current_user.forms.find(params[:id])
+      if @form.destroy
+        render :json => { :statusOk => true, :res => 'Form successfully deleted.' }
+      else
+        render :json => { :statusOk => false , :res => 'Something Went Wrong!' }
+      end
+    rescue
+      render :json => {:err => true, :msg=> 'not authrized'}
     end
   end
 
   
   private
   def form_params
-    params.require(:form).permit(:name, :description, :namecolor, :descolor, :titleunderlinecolor, :maxwidth, :borderradius, :boxshadow, :bgcolor, :fieldcolor, :fieldbrcolor, :btncolor, :btnbgcolor)
+    params.require(:form).permit(:name, :description, :namecolor, :descolor, :titleunderlinecolor, :maxwidth, :borderradius, :boxshadow, :bgcolor, :fieldcolor, :fieldbrcolor, :btncolor, :btnbgcolor,:user_id)
   end
   
 end

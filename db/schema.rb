@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_21_184218) do
+ActiveRecord::Schema.define(version: 2021_08_12_043506) do
 
   create_table "fields", force: :cascade do |t|
     t.integer "order"
@@ -39,6 +39,8 @@ ActiveRecord::Schema.define(version: 2021_07_21_184218) do
     t.string "fieldbrcolor"
     t.string "btncolor"
     t.string "btnbgcolor"
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_forms_on_user_id"
   end
 
   create_table "response_data", force: :cascade do |t|
@@ -73,6 +75,7 @@ ActiveRecord::Schema.define(version: 2021_07_21_184218) do
   end
 
   add_foreign_key "fields", "forms"
+  add_foreign_key "forms", "users"
   add_foreign_key "response_data", "fields"
   add_foreign_key "response_data", "forms"
   add_foreign_key "response_data", "responses"

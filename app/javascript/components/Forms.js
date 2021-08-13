@@ -19,15 +19,26 @@ class Forms extends React.Component {
   }
 
   handleClick(form_id){
+    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
     (async () => { 
       const response = await fetch(`http://localhost:3000/api/forms/${form_id}`,{
-        method: 'delete'
+        method: 'delete',
+        headers:{
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrf
+        }
       });
-      const { statusOk, res} = await response.json();
-      if(statusOk){
-        this.setState({forms: this.state.forms.filter(f=>f.id!==form_id)})
+      const resp = await response.json();
+      if(resp.err){
+        alert(resp.msg);
       }
-      alert(res);
+      else{
+        const { statusOk, res} = resp;
+        if(statusOk){
+          this.setState({forms: this.state.forms.filter(f=>f.id!==form_id)})
+        }
+        alert(res);
+      }
     })()
   }
 

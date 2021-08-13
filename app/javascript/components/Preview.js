@@ -13,10 +13,15 @@ export default function Preview() {
       const response = await fetch(`http://localhost:3000/api/forms/${form_id}`,{
         method: 'get',
       });
-      const { form, fields } = await response.json();
+      const res = await response.json();
       if(isRendered){
-        setFields(fields);
-        setformDetails(form);
+        if(res.err){
+          this.props.history.push('/forms')
+        }else{
+          const { form, fields } = res;
+          setFields(fields);
+          setformDetails(form);
+        }
       }
     }
     getValue();

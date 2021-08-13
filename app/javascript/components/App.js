@@ -11,7 +11,26 @@ import NewForm from './NewForm';
 import Responses from './Responses'
 import ShowResponse from './ShowResponse'
 import Preview from './Preview'
+
 class App extends React.Component {
+
+  async getUser() {
+    const csrf = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+    const response = await fetch('http://localhost:3000/static/user_details',{
+      method: 'post',
+      headers:{
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrf
+      }
+    });
+    const res = await response.json();
+    localStorage.setItem('user_id', res.id )
+  }
+
+  componentDidMount(){
+    this.getUser(); 
+  }
+
   render () {
     return (
       <React.Fragment>
