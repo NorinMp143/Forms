@@ -1,0 +1,18 @@
+// Place all the styles related to the Static controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+#brand-promotion {
+  margin: 3rem 0;
+}
+#brand-promotion h1 {
+  font-size: 96px;
+  font-weight: bolder;
+}
+#brand-promotion .btn {
+  background: #fff;
+  color: blueviolet;
+  font-weight: bold;
+  box-shadow: 1px 1px 5px 0 blueviolet;
+  margin-top: 2rem;
+}

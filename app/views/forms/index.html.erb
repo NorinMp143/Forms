@@ -1,0 +1,29 @@
+<div class="container">
+<h1>Listing Forms</h1>
+<%= link_to 'New Form', new_form_path, class: 'btn btn-primary' %>
+
+<% if(@forms.length > 0) %>
+<div class="table-responsive">
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th colspan="2"></th>
+  </tr>
+ 
+  <% @forms.each do |form| %>
+    <tr>
+      <td><%= form.name %></td>
+      <td><%= link_to 'Show', form_path(form), class: 'btn btn-primary' %></td>
+      <td><%= link_to 'Edit', edit_form_path(form), class: 'btn btn-warning' %></td>
+      <td><%= link_to 'Destroy', form_path(form),
+              method: :delete,
+              data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      <td><%= link_to 'All Responses', form_responses_path(form), class: 'btn btn-info' %></td>
+    </tr>
+  <% end %>
+</table>
+</div>
+<% else %>
+No Forms Found
+<% end %>
+</div>

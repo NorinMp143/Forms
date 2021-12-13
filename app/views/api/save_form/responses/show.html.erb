@@ -1,0 +1,20 @@
+<div class="container">
+  <div>
+    <h1>Message Details</h2>
+  </div>
+  <%= link_to 'Back', form_responses_path(@form), class: 'btn btn-info' %>
+  <div class="table-responsive">
+    <table class="table">
+      <tr>
+        <% @form.fields.each do |field| %>
+          <th><%= field.label %></th>
+        <% end %>
+      </tr>
+      <tr>
+        <% @response.response_data.each do |field| %>
+          <td><%= field.value %></td>
+        <% end %>
+      </tr>
+    </table>
+  </div>
+</div>

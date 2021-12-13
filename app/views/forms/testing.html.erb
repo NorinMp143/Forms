@@ -1,0 +1,119 @@
+<div class="whole-container">
+  <div class="header">
+    <div class="container">
+      <div class="pagetitle">
+        <h2>Create Form Fields</h2>
+      </div>
+    </div>
+    <div class="nav">
+      <div class="navleft">
+        <div class="form-name">
+          <strong>Form Name: </strong>
+          <%= @form.name %> <%= link_to 'Edit', edit_form_path(@form) %>
+        </div>
+      </div>
+      <div class="navright">
+        <div class="pageaction">
+          <button class="btn" id="addNewTag">Add New Element</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <section id="form-builder">
+      <div class="container">
+        <%= form_for([@form, @field]) do |f| %>
+          <div id="form-field-panel">
+            <!-- here our form fields -->
+          </div>
+          <div id="form-field-action"></div>
+        <% end %>
+      </div>
+    </section>
+  </div>
+</div>
+
+<div class="hide" id="new_fields_form">
+  <%= render partial: "fields/form", locals: {skill: false} %>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("#addNewTag").click(function(){
+    $("#form-field-panel").append($("#new_fields_form").html());
+    if($('#form-field-panel .form-field').length==1){
+      let submitBtnHtml = '<%= f.submit 'Submit' class: "btn" %>'
+      $('#form-field-action').append(submitBtnHtml);
+    }
+  });
+});
+</script>
+
+# <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+# <script>
+#   function addnew(){
+#     fieldHtml = `
+#     <div class="form-field">
+#             <div class="form-actions">
+#               <div class="left form-options main"></div>
+#               <div class="right form-options danger">
+#                 <div>
+#                   <button class="action-btn">x</button>
+#                 </div>
+#               </div>
+#             </div>
+#             <div class="form-field-details">
+#               <div class="field-wrapper">
+#                 <div class="field-group">
+#                   <select data-field="fieldtype">
+#                     <option value="input">Input</option>
+#                     <option value="textarea">Textarea</option>
+#                   </select>
+#                 </div>
+#                 <div class="field-group">
+#                   <input data-field="label" placeholder="Enter Label"/>
+#                 </div>
+#                 <div class="field-group">
+#                   <input data-field="placeholder" placeholder="Enter Placeholder"/>
+#                 </div>
+#                 <div class="field-group">
+#                   <select data-field="type">
+#                     <option value="-1">Select Type</option>
+#                     <option value="text">Text</option>
+#                     <option value="email">Email</option>
+#                     <option value="number">Number</option>
+#                   </select>
+#                 </div>
+#               </div>
+#             </div>
+#           </div>
+#     `;
+#     $('#form-field-panel').append(fieldHtml);
+#     if($('#form-field-panel .form-field').length==1){
+#       let submitBtnHtml = '<button class="btn" onclick="submitForm()">Submit</button>'
+#       $('#form-field-action').append(submitBtnHtml);
+#     }
+#   }
+#   function submitForm(){
+#     let data = [];
+#     $('.form-field').each((order,eachElement)=>{
+#       fieldType = $(eachElement).find('[data-field="fieldtype"]').val();
+#       label = $(eachElement).find('[data-field="label"]').val();
+#       placeholder = $(eachElement).find('[data-field="placeholder"]').val();
+#       elementType = $(eachElement).find('[data-field="type"]').val();
+#       data.push({ fieldType, label, placeholder, elementType, order})
+#     })
+#     console.log(data);
+#     $.ajax({
+#         url: '/forms',
+#         data: {data},
+#         type: 'POST',
+#         success: function(data){
+#             // handle your success here
+#             console.log(data);
+#         }
+#     });
+#   }
+# </script>

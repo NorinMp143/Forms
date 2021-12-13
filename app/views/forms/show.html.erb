@@ -1,0 +1,120 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+function deleteField(id){
+  if($(`${id}`)[0].hasAttribute("data-index")){
+    let fieldIndex = $(`${id}`).attr('data-index');
+
+    let fieldtype = $(`${id} #fieldtypes_`).val();
+    let label = $(`${id} #labels_`).val();
+    let placeholder = $(`${id} #placeholders_`).val();
+    let type = $(`${id} #types_`).val();
+
+    $.ajax({
+      url: `/forms/<%= @form.id %>/fields/${fieldIndex}`,
+      method: 'delete',
+      data: { fieldtype, label, placeholder, type },
+      complete: function(data){
+        console.log(data);
+        alert(data.responseJSON.response);
+      }
+    })
+  }
+  $(id).remove();
+}
+</script>
+<div class="whole-container">
+  <div class="header">
+    <div class="container">
+      <div class="pagetitle">
+        <h2>Create Form Fields</h2>
+      </div>
+    </div>
+    <div class="formbed-nav">
+      <div class="navleft">
+        <div class="form-name">
+          <strong>Form Name: </strong>
+          <%= @form.name %> 
+          <%= link_to 'Edit', edit_form_path(@form), class: 'btn btn-warning' %>
+          <%= link_to 'Back', forms_path, class: 'btn btn-info' %>
+        </div>
+      </div>
+      <div class="navright">
+        <div class="pageaction">
+          <button class="formbed-btn" id="addNewTag">Add New Element</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-container">
+    <section id="form-builder">
+      <div class="container">
+        <%= form_for([@form, @form.fields.build],remote: true) do |f| %>
+          <div id="form-field-panel">
+          <% @form.fields.each_with_index do |field, index| %>
+            <% if(field.fieldtype) %>
+            <div class="form-field" data-index="<%= field.id %>" id="form-field<%= index %>">
+              <div class="form-actions">
+                <div class="left form-options main"></div>
+                <div class="right form-options danger">
+                  <div>
+                    <button type="button" onclick="deleteField('#form-field<%= index %>')" data-remote="true" class="action-btn">x</button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-field-details">
+                <div class="field-wrapper">
+                  <%= hidden_field_tag 'datas[]', field.id %>
+                  <div class="field-group">
+                    <%= select_tag('fieldtypes[]',options_for_select([ ["Select Field Type",'-1'], ["Input",'input'], ["Textarea", 'textarea'] ],:selected=>field.fieldtype)) %>
+                  </div>
+                  <div class="field-group">
+                    <%= text_field_tag 'labels[]', field.label , placeholder: "Enter Label" %>
+                  </div>
+                  <div class="field-group">
+                    <%= text_field_tag 'placeholders[]', nil , placeholder: "Enter Placeholder" %>
+                  </div>
+                  <div class="field-group">
+                    <%= select_tag('types[]',options_for_select([['Select Type','-1'],['Text','text'],['Email','email'],['Number','number']],
+                    :selected=>field.elementtype)) %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <% end %>
+          <% end %>
+            <!-- here our form fields -->
+          </div>
+          <div id="form-field-action">
+            <% if(@form.fields[0].fieldtype && @form.fields.length>0)%>
+              <%= button_tag "Submit", class: "formbed-btn" %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </section>
+  </div>
+</div>
+
+
+
+
+<script>
+$(document).ready(function(){
+  $("#addNewTag").click(function(){
+    $("#form-field-panel").append(`<%= render partial: "fields/form" %>`);
+    $('#form-field-panel .form-field')
+      .last()
+      .attr('id','form-field'+$('#form-field-panel .form-field').length)
+      .find('.danger .action-btn')
+      .attr('data-targetid','form-field'+$('#form-field-panel .form-field').length)
+      .attr('onclick','deleteField("#form-field'+$('#form-field-panel .form-field').length+'")');
+
+    if($('#form-field-panel .form-field').length==1){
+      let submitBtnHtml = '<%= button_tag "Submit", class: "formbed-btn" %>';
+      $('#form-field-action').html(submitBtnHtml);
+    }
+  });
+  
+});
+</script>

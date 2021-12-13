@@ -1,0 +1,26 @@
+<div class="form-field">
+  <div class="form-actions">
+    <div class="left form-options main"></div>
+    <div class="right form-options danger">
+      <div>
+        <button type="button" class="action-btn">x</button>
+      </div>
+    </div>
+  </div>
+  <div class="form-field-details">
+    <div class="field-wrapper">
+      <div class="field-group">
+        <%= select_tag('fieldtypes[]',options_for_select([ ["Select Field Type",'-1'], ["Input",'input'], ["Textarea", 'textarea'] ])) %>
+      </div>
+      <div class="field-group">
+        <%= text_field_tag 'labels[]',nil, placeholder: "Enter Label" %>
+      </div>
+      <div class="field-group">
+        <%= text_field_tag 'placeholders[]',nil, placeholder: "Enter Placeholder" %>
+      </div>
+      <div class="field-group">
+        <%= select_tag('types[]',options_for_select([['Select Type','-1'],['Text','text'],['Email','email'],['Number','number']])) %>
+      </div>
+    </div>
+  </div>
+</div>

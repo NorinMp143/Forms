@@ -1,0 +1,27 @@
+<div class="container">
+<h1>Listing Responses</h1>
+<%= link_to 'Back', forms_path, class: 'btn btn-info' %>
+<% if @form.responses.length > 0 %>
+<div class="table-responsive">
+<table class="table">
+<tr>
+        <% @form.fields.each do |field| %>
+          <th><%= field.label %></th>
+        <% end %>
+      </tr>
+      <% @form.responses.each do |response| %>
+      <tr>
+        <% response.response_data.each do |field| %>
+          <td><%= field.value %></td>
+        <% end %>
+        <td><%= link_to 'Show', form_response_path(@form,response.id), class: 'btn btn-primary' %></td>
+  <td><%= link_to 'Destroy', form_response_path(@form,response.id), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>
+      </tr>
+      <% end %>
+  
+</table>
+</div>
+<% else %>
+No Responses Found
+<% end %>
+</div>
